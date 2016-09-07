@@ -5,15 +5,16 @@ __author__ = 'printos'
 import requests, json, hmac, hashlib, datetime, base64, string, random
 
 #access credentials
-token = ''
+#baseUrl = "https://printos.api.hp.com/box" 						#use for production server account
+baseUrl = "https://stage.printos.api.hp.com/box"				#use for staging server account
+key = ''
 secret = ''
-endpoint = "https://stage.printos.api.hp.com/box"				#change depending on if you are using staging or production
 
 #amazon fetch and upload urls
 amazon_fetch_url  = ""
 amazon_upload_url = ""
 
-fileToUpload = ""
+fileToUpload = "C:\\FilePath\\FileName.pdf"
 
 #--------------------------------------------------------------#
 
@@ -26,7 +27,7 @@ Params:
   recipient - Name of recipient
   sender - sender of the folder
 '''
-def create_folder(fname, recipient, sender='PythonSender'):
+def create_folder(fname, recipient, sender):
 	print("In create_folder function()")
 	print(" Creating folder: ", fname, "\n Recipient: ", recipient, "\n Sender: ", sender)
 	payload = {'name':fname, 'from':sender, 'to':recipient}
@@ -36,12 +37,12 @@ def create_folder(fname, recipient, sender='PythonSender'):
 
 
 '''
-Creates the header using the token/secret which
+Creates the header using the key/secret which
 allows you to make the API calls
 
 Params:
   method - type of method (POST, GET, PUT, etc)
-  path - api path (excluding the base endpoint)
+  path - api path (excluding the base url)
   timestamp - current time in specified format
 '''
 def create_headers(method, path, timestamp):
@@ -49,7 +50,7 @@ def create_headers(method, path, timestamp):
 	local_secret = secret.encode('utf-8')
 	string_to_sign = string_to_sign.encode('utf-8')
 	signature = hmac.new(local_secret, string_to_sign, hashlib.sha1).hexdigest()
-	auth = token + ':' + signature
+	auth = key + ':' + signature
 	return {
 		'content-type': 'application/json',
 		'x-hp-hmac-authentication': auth,
@@ -102,7 +103,7 @@ def get_uploadUrls(mimeType):
 	print("In get_uploadUrls function()")
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	path = '/api/partner/file/uploadurls'
-	url = endpoint + path
+	url = baseUrl + path
 	headers = create_headers("GET", path, timestamp)
 	result = requests.get(url, headers=headers, params={'mimeType':mimeType})
 	return result
@@ -122,13 +123,13 @@ def print_json(data):
 GET call
 
 Params:
-  path - api path (excluding the base endpoint)
+  path - api path (excluding the base url)
 '''
 def request_get(path):
 	print("In request_get() function")
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	print(" Timestamp: ", timestamp)
-	url = endpoint + path
+	url = baseUrl + path
 	headers = create_headers("GET", path, timestamp)
 	result = requests.get(url, headers=headers)
 	return result
@@ -138,14 +139,14 @@ def request_get(path):
 POST call
 
 Params:
-  path - api path (excluding the base endpoint)
+  path - api path (excluding the base url)
   data - data to be posted
 '''
 def request_post(path, data):
 	print("In request_post() function")
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	print(" Timestamp: ", timestamp)
-	url = endpoint + path
+	url = baseUrl + path
 	headers = create_headers("POST", path, timestamp)
 	result = requests.post(url, data, headers=headers)
 	return result
@@ -160,7 +161,7 @@ Params:
 '''
 def upload_file(folder_id, file_url):
 	print("In upload_file() function")
-	payload = { 'url': file_url, 'name': 'File.pdf', 'notes': 'Please work, I\'ll give cookies', 'folderId': folder_id, 'copies': 1 }
+	payload = { 'url': file_url, 'name': 'Python_File.pdf', 'notes': 'File was uploaded using Python', 'folderId': folder_id, 'copies': 1 }
 	body = json.JSONEncoder().encode(payload)
 	return request_post('/api/partner/file', body)
 
@@ -187,9 +188,9 @@ def upload_file_to_aws(amazonUrl, fileToUpload, contentType):
 Test functions to test out each part of the Box API
 '''
 
-def test_create_folder(fname, recipient):
+def test_create_folder(fname, recipient, sender):
 	print("In test_create_folder() function")
-	result = create_folder(fname, recipient)
+	result = create_folder(fname, recipient, sender)
 	print_json(result)
 
 def test_get_file(file_id):
@@ -226,10 +227,10 @@ def test_upload_file_to_aws(amazonUrl, fileToUpload, contentType):
 #--------------------------------------------------------------#
 
 
-test_create_folder('PythonFolderName', 'PythonRecipient') 										#uncomment out if folder needs to be created
-#test_get_folder("") 																	#pass in ID of the folder from the result of test_create_folder
-#test_get_substrates()																	#list of available substrates to add when uploading file
-#test_get_uploadUrls("application/pdf")													#comment out if you already have the upload URLs, change MIME type depending on file you need to upload
-#test_upload_file_to_aws(amazon_upload_url, fileToUpload, "application/pdf")				#<Response [200]> is the response you want to see					
-#test_upload_file("57bc9a7144e4f91100e61485", amazon_fetch_url)							#provide own file url or upload file to amazon aws url and then provide fetch url
-#test_get_file("57bcafb044e4f91100e6179e")												#pass in ID of the file from the result of test_upload_file
+test_create_folder('Python_Folder', 'Python_Receiver', 'Python_Sender') 				
+#test_get_folder("FolderId") 															
+test_get_substrates()																	
+test_get_uploadUrls("application/pdf")													
+#test_upload_file_to_aws(amazon_upload_url, fileToUpload, "application/pdf")						
+#test_upload_file("FolderId", amazon_fetch_url)							
+#test_get_file("FileId")												
