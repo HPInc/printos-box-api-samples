@@ -1,0 +1,70 @@
+In test_upload_file() function
+In upload_file() function
+In request_post() function
+ Timestamp:  2016-09-07T17:59:16Z
+{
+    "__v": 1,
+    "_id": "57d05577f20c5a1100fb5b80",
+    "created": "2016-09-07T17:59:19.550Z",
+    "createdAt": "2016-09-07T17:59:19.550Z",
+    "currentRevision": 2,
+    "currentVersion": {
+        "_id": "57d05577f20c5a1100fb5b84",
+        "created": "2016-09-07T17:59:19.601Z",
+        "pageConfigs": [],
+        "pageCount": 0,
+        "pages": [],
+        "preflight": {
+            "fixups": []
+        },
+        "profile": "standard",
+        "revision": 2,
+        "size": 0,
+        "status": "pending"
+    },
+    "currentVersionId": "57d05577f20c5a1100fb5b84",
+    "folderId": "57d054aaf20c5a1100fb5b4c",
+    "id": "57d05577f20c5a1100fb5b80",
+    "lastAction": "Preflighting",
+    "lastPrinted": null,
+    "lastSent": null,
+    "modified": "2016-09-07T17:59:19.619Z",
+    "name": "Python_File.pdf",
+    "organizationId": "Organization_id",
+    "printInstructions": {
+        "copies": 1,
+        "notes": "File was uploaded using Python"
+    },
+    "size": 0,
+    "sourceUrl": "Source_Url",
+    "updatedAt": "2016-09-07T17:59:19.619Z",
+    "versions": [
+        {
+            "_id": "57d05577f20c5a1100fb5b82",
+            "created": "2016-09-07T17:59:19.551Z",
+            "pageConfigs": [],
+            "pageCount": 0,
+            "pages": [],
+            "preflight": {
+                "fixups": []
+            },
+            "revision": 1,
+            "size": 0,
+            "status": "pending"
+        },
+        {
+            "_id": "57d05577f20c5a1100fb5b84",
+            "created": "2016-09-07T17:59:19.601Z",
+            "pageConfigs": [],
+            "pageCount": 0,
+            "pages": [],
+            "preflight": {
+                "fixups": []
+            },
+            "profile": "standard",
+            "revision": 2,
+            "size": 0,
+            "status": "pending"
+        }
+    ]
+}

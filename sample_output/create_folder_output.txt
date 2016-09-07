@@ -1,0 +1,28 @@
+In test_create_folder() function
+In create_folder function()
+ Creating folder:  Python_Folder 
+ Recipient:  Python_Receiver 
+ Sender:  Python_Sender
+ Body:  {"from": "Python_Sender", "name": "Python_Folder", "to": "Python_Receiver"}
+In request_post() function
+ Timestamp:  2016-09-07T17:43:51Z
+{
+    "__v": 0,
+    "_id": "Folder_Id_Found_Here",
+    "created": "2016-09-07T17:43:54.193Z",
+    "createdAt": "2016-09-07T17:43:54.193Z",
+    "createdFrom": "box",
+    "fileCount": 0,
+    "from": "Python_Sender",
+    "lname": "python_folder",
+    "modified": "2016-09-07T17:43:54.193Z",
+    "name": "Python_Folder",
+    "organizationId": "Organization_id",
+    "preflightStatus": "ok",
+    "status": "ready",
+    "tags": [],
+    "to": "Python_Receiver",
+    "totalSize": 0,
+    "unread": false,
+    "updatedAt": "2016-09-07T17:43:54.193Z"
+}
