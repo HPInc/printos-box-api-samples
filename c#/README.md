@@ -13,7 +13,9 @@ Package restore should take care of this, but if something occurs and the packag
 
 Program is a Console Application so F5 or clicking Start on the menu bar should build and run the program.
 
-Before you can run the code, you need to provide the Key/Secret (Line 17/18). The initial functions will create a folder, get available substrates and print out the amazon upload/fetch urls. The fetch and upload urls will be used to upload a local file to amazon which can then be uploaded to box. If you already have your file hosted yourself, you will not need to use this function.
+Before you can run the code, you need to provide the Key/Secret (Line 17/18). There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
+
+The initial functions will create a folder, get available substrates and print out the amazon upload/fetch urls. The fetch and upload urls will be used to upload a local file to amazon which can then be uploaded to box. If you already have your file hosted yourself, you will not need to use this function.
 
 The folder id that is needed for the GetFolder() function is obtained from the CreateFolder output. A sample output can be found in [../sample_output/create_folder_output.txt] (https://github.com/HPInc/printos-box-api-samples/blob/master/sample_output/create_folder_output.txt) where the id you will use is on line 11.
 
