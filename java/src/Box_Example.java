@@ -8,7 +8,7 @@ import org.apache.http.ParseException;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-public class Driver {
+public class Box_Example {
 
 	//Access Credentials
 	private static String key = "";
