@@ -14,7 +14,7 @@ namespace Box
     {
         //Access Credentials
         //private static string baseUrl = "https://printos.api.hp.com/box"; //use for production server account
-        private static string baseUrl = "https://stage.printos.api.hp.com/box"; // use for staging server account
+        //private static string baseUrl = "https://stage.printos.api.hp.com/box"; // use for staging server account
         private static string key = "";
         private static string secret = "";
 

@@ -5,8 +5,8 @@ __author__ = 'printos'
 import requests, json, hmac, hashlib, datetime, base64, string, random
 
 #access credentials
-#baseUrl = "https://printos.api.hp.com/box" 						#use for production server account
-baseUrl = "https://stage.printos.api.hp.com/box"				#use for staging server account
+#baseUrl = "https://printos.api.hp.com/box" 					#use for production server account
+#baseUrl = "https://stage.printos.api.hp.com/box"				#use for staging server account
 key = ''
 secret = ''
 
