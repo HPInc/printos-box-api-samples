@@ -8,11 +8,11 @@ External libraries used:
  * Apache HttpComponents
  * org.json
 
-The JAR files to the libraries have been included, see /needed_jars. You may need to configure the jars to your build path to compile and run the project.
+The JAR files to the libraries are not included. You will need to download and configure the jars to your build path to compile and run the project. You may also use different libraries to create the needed JSON strings and Http request.s
 
 ##How To Run / Program Information
 
-The Driver.java class is the one that you will run.
+The Box_Example.java class is the one that you will run.
 
 Before you can run the code, you need to provide the Key/Secret (Line 14/15). The Box.java class has two baseUrls. Uncomment the one that your Key/Secret was created/provided in.
 
