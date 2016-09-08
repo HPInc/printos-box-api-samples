@@ -8,7 +8,7 @@ External libraries used:
  * Apache HttpComponents
  * org.json
 
-The JAR files to the libraries are not included. You will need to download and configure the jars to your build path to compile and run the project. You may also use different libraries to create the needed JSON strings and Http request.s
+The JAR files to the libraries are not included. You will need to download and configure the jars to your build path to compile and run the project. You may also use different libraries to create the needed JSON strings and Http requests.
 
 ##How To Run / Program Information
 
