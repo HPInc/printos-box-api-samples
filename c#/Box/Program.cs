@@ -39,7 +39,7 @@ namespace Box
             //await GetFolder("FolderId"); WaitBeforeProceeding();
             await GetSubstrates(); WaitBeforeProceeding();
             await GetUploadUrls("application/pdf"); WaitBeforeProceeding();
-            //await UploadFileToAWS(fileToUpload); WaitBeforeProceeding();
+            //await UploadFileToAWS(fileToUpload, "application/pdf"); WaitBeforeProceeding();
             //await UploadFileToBox("FolderId", fileUrl); WaitBeforeProceeding();
             //await GetFile("FileId"); WaitBeforeProceeding();
         }
@@ -47,6 +47,12 @@ namespace Box
         //Helper methods below
         /*------------------------------------------------------------------------------------*/
 
+        /// <summary>
+        /// Creates and adds the Hmac headers to a client
+        /// </summary>
+        /// <param name="method">Type of Http method (GET, POST, PUT)</param>
+        /// <param name="path">Endpoint which the method will hit</param>
+        /// <param name="client">HttpClient to have the headers added to</param>
         private static void CreateHmacHeaders(string method, string path, HttpClient client)
         {
             string timeStamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
@@ -71,6 +77,13 @@ namespace Box
         //Methods for APIs Below
         /*------------------------------------------------------------------------------------*/
 
+        /// <summary>
+        /// Creates a folder within the Box application
+        /// </summary>
+        /// <param name="folderName">Name of the folder</param>
+        /// <param name="recipient">Name of receiver</param>
+        /// <param name="sender">Name of sender</param>
+        /// <returns></returns>
         private static async Task CreateFolder(string folderName, string recipient, string sender)
         {
             Console.WriteLine("Creating folder with name: "  + folderName);
@@ -103,6 +116,11 @@ namespace Box
             }
         }
 
+        /// <summary>
+        /// Gets information about a file in Box
+        /// </summary>
+        /// <param name="fileId">Id of the file</param>
+        /// <returns></returns>
         private static async Task GetFile(string fileId)
         {
             Console.WriteLine("Getting file with ID: " + fileId);
@@ -128,6 +146,11 @@ namespace Box
             }
         }
 
+        /// <summary>
+        /// Gets information about a folder in Box
+        /// </summary>
+        /// <param name="folderId">Id of the folder</param>
+        /// <returns></returns>
         private static async Task GetFolder(string folderId)
         {
             Console.WriteLine("Getting folder with ID: " + folderId);
@@ -153,6 +176,10 @@ namespace Box
             }
         }
 
+        /// <summary>
+        /// Gets the list of available substrates set in Box
+        /// </summary>
+        /// <returns></returns>
         private static async Task GetSubstrates()
         {
             Console.WriteLine("Getting list of substrates");
@@ -176,6 +203,11 @@ namespace Box
             }
         }
 
+        /// <summary>
+        /// Gets the amazon aws upload urls for a certain filetyple
+        /// </summary>
+        /// <param name="mimeType">MIME type of the file to upload</param>
+        /// <returns></returns>
         private static async Task GetUploadUrls(string mimeType)
         {
             Console.WriteLine("Getting upload urls");
@@ -202,14 +234,20 @@ namespace Box
             }
         }
 
-        private static async Task UploadFileToAWS(string file)
+        /// <summary>
+        /// Uploads a file to an amazon aws upload url
+        /// </summary>
+        /// <param name="file">local file to upload</param>
+        /// <param name="contentType">Content-Type of file (should be same as mimetype you passed in to get uploadurls)</param>
+        /// <returns></returns>
+        private static async Task UploadFileToAWS(string file, string contentType)
         {
             Console.WriteLine("Uploading file: " + file + " to AWS.");
 
             using (var client = new HttpClient())
             {
                 HttpContent content = new StreamContent(File.OpenRead(file));
-                content.Headers.Add("Content-Type", "application/json");
+                content.Headers.Add("Content-Type", contentType);
 
                 HttpResponseMessage response = await client.PutAsync(amazonUpload, content);
 
@@ -226,6 +264,12 @@ namespace Box
             }
         }
 
+        /// <summary>
+        /// Upload a file to a specified folder in Box
+        /// </summary>
+        /// <param name="folderId">Id of the folder to upload to</param>
+        /// <param name="fileUrl">Url of the file (not a local path)</param>
+        /// <returns></returns>
         private static async Task UploadFileToBox(string folderId, string fileUrl)
         {
             Console.WriteLine("Uploading file: " + fileUrl + " to Box.");
