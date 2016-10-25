@@ -1,4 +1,6 @@
 <?php
+# © Copyright 2016 HP Development Company, L.P.
+# SPDX-License-Identifier: MIT
 
 #Access credentials
 #$baseUrl = 'https://printos.api.hp.com/box'; #use for a production account
