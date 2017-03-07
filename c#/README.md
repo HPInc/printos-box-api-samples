@@ -13,7 +13,7 @@ Package restore should take care of this, but if something occurs and the packag
 
 Program is a Console Application so F5 or clicking Start on the menu bar should build and run the program.
 
-Before you can run the code, you need to provide the Key/Secret (Line 17/18). There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
+Before you can run the code, you need to provide the Key/Secret. There are two baseUrls provided. Uncomment the one that your Key/Secret was created/provided in.
 
 The initial functions will create a folder, get available substrates and print out the amazon upload/fetch urls. The fetch and upload urls will be used to upload a local file to amazon which can then be uploaded to box. If you already have your file hosted yourself, you will not need to use this function.
 

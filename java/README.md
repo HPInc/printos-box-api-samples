@@ -14,7 +14,7 @@ The JAR files to the libraries are not included. You will need to download and c
 
 The Box_Example.java class is the one that you will run.
 
-Before you can run the code, you need to provide the Key/Secret (Line 14/15). The Box.java class has two baseUrls. Uncomment the one that your Key/Secret was created/provided in.
+Before you can run the code, you need to provide the Key/Secret. The Box.java class has two baseUrls. Uncomment the one that your Key/Secret was created/provided in.
 
 The initial methods will create a folder, get available substrates and print out the amazon upload/fetch urls. The fetch and upload urls will be used to upload a local file to amazon which can then be uploaded to box. If you already have your file hosted yourself, you will not need to use this method.
 
