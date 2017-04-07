@@ -1,6 +1,6 @@
-#Python
+# Python
 
-##General Information
+## General Information
 
 Code was written in Python 3.5.2
 Uses the "requests" module so that will need to be installed in order to run the code
@@ -15,7 +15,7 @@ Linux/Mac:
 
 It also uses json, hmac, hashlib, datetime, base64, string, random modules as well. If they aren't found, you may need to install these as well.
 
-##How To Run / Program Information
+## How To Run / Program Information
 
 Run on the command line using ```python box_api.py```
 

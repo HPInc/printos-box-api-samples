@@ -1,6 +1,6 @@
-#Java
+# Java
 
-##General Information
+## General Information
 
 Code was written in Eclipse Neon
 
@@ -10,7 +10,7 @@ External libraries used:
 
 The JAR files to the libraries are not included. You will need to download and configure the jars to your build path to compile and run the project. You may also use different libraries to create the needed JSON strings and Http requests.
 
-##How To Run / Program Information
+## How To Run / Program Information
 
 The Box_Example.java class is the one that you will run.
 
