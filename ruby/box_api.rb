@@ -35,6 +35,36 @@ def create_folder(folder_name, recipient, sender)
 	puts response.body
 end
 
+# Creates a folder with the given folder and recipient/sender information and
+# uploads the specified files into the newly created folder
+#
+# Params:
+#   folder_name - Folder name
+#   recipient - Name of recipient
+#   sender - sender of the folder
+def create_folder_with_files(folder_name, recipient, sender) 
+	puts "Creating folder with files."
+	data = {
+		"name" => folder_name,
+		"from" => sender,
+		"to" => recipient,
+		"files" => [{
+			"name" => "Ruby_File1.pdf",
+			"copies" => 1,
+			"notes" => "Ruby_File1 was uploaded using Ruby",
+			"url" => "file_url1"
+		}, {
+			"name" => "Ruby_File2.pdf",
+			"copies" => 1,
+			"notes" => "Ruby_File2 was uploaded using Ruby",
+			"url" => "file_url2"
+		}]
+	}.to_json()
+	puts data
+	response = request_post('/api/partner/folder', data)
+	puts response.body
+end
+
 # Gets information about a file in Box.
 #
 # Param: 
@@ -221,6 +251,7 @@ end
 #--------------------------------------------------------------#
 
 create_folder("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
+#create_folder_with_files("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
 #get_folder("FolderId")
 get_substrates()
 get_upload_urls("application/pdf")

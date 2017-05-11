@@ -18,6 +18,7 @@ $fileToUpload = 'C:\\FilePath\\FileName.pdf';
 #--------------------------------------------------------------#
 
 createFolder('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
+#createFolderWithFiles('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
 #getFolder('FolderId');
 getSubstrates();
 getUploadUrls("application/pdf");
@@ -38,7 +39,38 @@ getUploadUrls("application/pdf");
  */
 function createFolder($folderName, $recipient, $sender) {
 	echo "Creating Folder: " . $folderName . "</br>";
-	$arr = array('name' => $folderName, 'to' => $recipient, 'from' => $sender);
+	$arr = array(
+		'name' => $folderName, 
+		'to' => $recipient, 
+		'from' => $sender
+	);
+	$data = json_encode($arr);
+	$response = postRequest('/api/partner/folder', $data);
+	printInfo($response);
+}
+
+/**
+ * Creates a folder with the given folder and recipient/sender information and
+ * uploads the specified files into the newly created folder.
+ * 
+ * @param $folderName - name of the created folder
+ * @param $recipient - name of the receiver
+ * @param $sender - name of the sender
+ */
+function createFolderWithFiles($folderName, $recipient, $sender) {
+	echo "Creating folder with files. </br>";
+
+	$files = array();
+    array_push($files, new File("PHP_File1.pdf", 1, "PHP_File1 was uploaded using PHP", "fileUrl1"));
+    array_push($files, new File("PHP_File2.pdf", 1, "PHP_File2 was uploaded using PHP", "fileUrl2"));
+
+	$arr = array(
+		'name' => $folderName,
+		'to' => $recipient, 
+		'from' => $sender,
+		'files' => $files
+	);
+
 	$data = json_encode($arr);
 	$response = postRequest('/api/partner/folder', $data);
 	printInfo($response);
@@ -263,6 +295,23 @@ function putRequest($file, $contentType) {
 
 	$context = stream_context_create($options);
 	return file_get_contents($amazon_upload_url, false, $context);
+}
+
+# Classes
+#--------------------------------------------------------------#
+
+class File {
+	public $name;
+	public $copies;
+	public $notes;
+	public $url;
+
+	function __construct($name, $copies, $notes, $url) {
+		$this->name = $name;
+		$this->copies = $copies;
+		$this->notes = $notes;
+		$this->url = $url;
+	}
 }
 
 ?>

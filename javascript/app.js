@@ -20,8 +20,13 @@ function BoxApiTest() {
 		.then(success, failure);
 	}
 
-	this.testCreateFile = function(url, name, folder_id, copies, notes) {
-		boxApi.createFile(url, name, folder_id, copies, notes)
+	this.testCreateFolderWithFiles = function(fname, recipient, sender) {
+		boxApi.createFolderWithFiles(fname, recipient, sender)
+		.then(success, failure);
+	}
+
+	this.testUploadFile = function(url, name, folder_id, copies, notes) {
+		boxApi.uploadFile(url, name, folder_id, copies, notes)
 		.then(success, failure);
 	}
 
@@ -46,12 +51,13 @@ function BoxApiTest() {
 	}
 
 	this.testAll = function() {
-		this.testCreateFolder('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');	
+		this.testCreateFolder('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');
+		// this.testCreateFolderWithFiles('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');	
 		// this.testGetFolder('folder_id');
-		// this.testCreateFile('http://www.w3schools.com/html/pic_mountain.jpg', 'JavaScript_File.jpg', 'folder_id', copies='3', notes='File was uploaded using JavaScript');
+		this.testGetSubstrates(); 
+		this.testGetUploadUrls('application/pdf');
+		// this.testUploadFile('http://www.w3schools.com/html/pic_mountain.jpg', 'JavaScript_File.jpg', 'folder_id', copies='3', notes='File was uploaded using JavaScript');
 		// this.testGetFile('file_id');
-		// this.testGetUploadUrls('application/pdf');
-		// this.testGetSubstrates(); 
 	}
 }
 

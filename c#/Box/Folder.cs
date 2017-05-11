@@ -14,5 +14,10 @@ namespace Box
         public string name { get; set; }
         public string from { get; set; }
         public string to { get; set; }
+        public List<BoxFile> files { get; set; }
+
+        public Folder() {
+            files = new List<BoxFile>();
+        }
     }
 }

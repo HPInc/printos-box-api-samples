@@ -39,6 +39,7 @@ namespace Box
         static async Task RunAsync()
         {
             await CreateFolder("CSharp_Folder", "CSharp_Receiver", "CSharp_Sender"); WaitBeforeProceeding();
+            //await CreateFolderWithFiles("CSharp_Folder", "CSharp_Receiver", "CSharp_Sender"); WaitBeforeProceeding();
             //await GetFolder("FolderId"); WaitBeforeProceeding();
             await GetSubstrates(); WaitBeforeProceeding();
             await GetUploadUrls("application/pdf"); WaitBeforeProceeding();
@@ -118,6 +119,42 @@ namespace Box
                 }
             }
         }
+
+        private static async Task CreateFolderWithFiles(string folderName, string recipient, string sender)
+        {
+            Console.WriteLine("Creating folder with files");
+            using (var client = new HttpClient())
+            {
+                CreateHmacHeaders("POST", "/api/partner/folder", client);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                Folder folder = new Folder();
+                folder.name = folderName;
+                folder.to = recipient;
+                folder.from = sender;
+
+                folder.files.Add(new BoxFile("FileUrl1","CSharp_File1.pdf","1"));
+                folder.files.Add(new BoxFile("FileUrl2", "CSharp_File2.pdf", "1"));
+
+                string folderJson = JsonConvert.SerializeObject(folder, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                HttpResponseMessage response = await client.PostAsync(baseUrl + "/api/partner/folder", new StringContent(folderJson, Encoding.UTF8, "application/json"));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("\nSuccess. Folder was created.\n");
+                    string info = await response.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(info);
+                    string infoFormatted = json.ToString();
+                    Console.WriteLine(infoFormatted);
+                }
+                else
+                {
+                    Console.WriteLine("Failure. Unable to create folder");
+                    Console.WriteLine(response.ReasonPhrase);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Gets information about a file in Box
@@ -285,7 +322,7 @@ namespace Box
                 BoxFile file = new BoxFile(fileUrl, "CSharp_File.pdf", folderId, "10");
                 file.notes = "File was uploaded using CSharp";
 
-                string fileJson = JsonConvert.SerializeObject(file);
+                string fileJson = JsonConvert.SerializeObject(file, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 HttpResponseMessage response = await client.PostAsync(baseUrl + "/api/partner/file", new StringContent(fileJson, Encoding.UTF8, "application/json"));
 
                 if (response.IsSuccessStatusCode)

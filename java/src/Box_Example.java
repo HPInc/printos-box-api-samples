@@ -29,6 +29,7 @@ public class Box_Example {
 		box = new Box(key, secret, "HmacSHA1");
 
 		printInfo( box.CreateFolder("Java_Folder", "Java_Receiver", "Java_Sender"), true );
+//		printInfo( box.CreateFolderWithFiles("Java_Folder", "Java_Receiver", "Java_Sender"), true);
 //		printInfo( box.GetFolder("FolderId"), true );
 		printInfo( box.GetSubstrates(), false );
 		printInfo( box.GetUploadUrls("application/pdf"), true );

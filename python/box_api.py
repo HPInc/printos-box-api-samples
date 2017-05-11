@@ -23,7 +23,7 @@ fileToUpload = "C:\\FilePath\\FileName.pdf"
 
 
 '''
-Creates a folder with the given folder and recipient name
+Creates a folder with the given folder and recipient information
 
 Params:
   fname - Folder name
@@ -31,9 +31,42 @@ Params:
   sender - sender of the folder
 '''
 def create_folder(fname, recipient, sender):
-	print("In create_folder function()")
+	print("In create_folder() function")
 	print(" Creating folder: ", fname, "\n Recipient: ", recipient, "\n Sender: ", sender)
 	payload = {'name':fname, 'from':sender, 'to':recipient}
+	body = json.JSONEncoder().encode(payload)
+	print(" Body: ", body)
+	return request_post('/api/partner/folder', body)
+
+
+'''
+Creates a folder with the given folder and recipient/sender information and
+uploads the specified files into the newly created folder
+
+Params:
+  fname - Folder name
+  recipient - Name of recipient
+  sender - sender of the folder
+'''
+def create_folder_with_files(fname, recipient, sender):
+	print("In create_folder_with_files() function")
+	print(" Creating folder: ", fname, "\n Recipient: ", recipient, "\n Sender: ", sender)
+	payload = {
+		'name': fname,
+		'from': sender,
+		'to': recipient,
+		'files': [{
+			'name': 'Python_File1.pdf',
+			'copies': 1,
+			'notes': 'Python_File1 was uploaded using Python',
+			'url': "file_url1",
+		}, {
+			'name': 'Python_File2.pdf',
+			'copies': 1,
+			'notes': 'Python_File2 was uploaded using Python',
+			'url': "file_url2",
+		}]
+	}
 	body = json.JSONEncoder().encode(payload)
 	print(" Body: ", body)
 	return request_post('/api/partner/folder', body)
@@ -69,7 +102,7 @@ Params:
   file_id - ID of file to get information on
 '''
 def get_file(file_id):
-	print("In get_file function()")
+	print("In get_file() function")
 	print(" Getting file with ID: ", file_id)
 	path = '/api/partner/file/' + file_id
 	return request_get(path)
@@ -82,7 +115,7 @@ Params:
   folder_id - ID of folder to get information on
 '''
 def get_folder(folder_id):
-	print("In get_folder function()")
+	print("In get_folder() function")
 	print(" Getting folder with ID: ", folder_id)
 	path = '/api/partner/folder/' + folder_id
 	return request_get(path)
@@ -103,7 +136,7 @@ Params:
   mimeType - MIME type of file that will be uploaded (application/pdf, image/jpeg, etc)
 '''
 def get_uploadUrls(mimeType):
-	print("In get_uploadUrls function()")
+	print("In get_uploadUrls() function")
 	timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 	path = '/api/partner/file/uploadurls'
 	url = baseUrl + path
@@ -196,6 +229,11 @@ def test_create_folder(fname, recipient, sender):
 	result = create_folder(fname, recipient, sender)
 	print_json(result)
 
+def test_create_folder_with_files(fname, recipient, sender):
+	print("In test_create_folder_with_files() function")
+	result = create_folder_with_files(fname, recipient, sender)
+	print_json(result)
+
 def test_get_file(file_id):
 	print("In test_get_file() function")
 	result = get_file(file_id)
@@ -213,7 +251,7 @@ def test_get_substrates():
 
 def test_get_uploadUrls(mimeType):
 	print("In test_get_uploadUrls() function")
-	result = get_uploadUrls(mimeType)											
+	result = get_uploadUrls(mimeType)
 	print_json(result)
 
 def test_upload_file(folder_id, file_url):
@@ -230,10 +268,11 @@ def test_upload_file_to_aws(amazonUrl, fileToUpload, contentType):
 #--------------------------------------------------------------#
 
 
-test_create_folder('Python_Folder', 'Python_Receiver', 'Python_Sender') 				
-#test_get_folder("FolderId") 															
-test_get_substrates()																	
-test_get_uploadUrls("application/pdf")													
-#test_upload_file_to_aws(amazon_upload_url, fileToUpload, "application/pdf")						
-#test_upload_file("FolderId", amazon_fetch_url)							
-#test_get_file("FileId")												
+test_create_folder('Python_Folder', 'Python_Receiver', 'Python_Sender')
+#test_create_folder_with_files('Python_Folder', 'Python_Receiver', 'Python_Sender')
+#test_get_folder("FolderId")
+test_get_substrates()
+test_get_uploadUrls("application/pdf")
+#test_upload_file_to_aws(amazon_upload_url, fileToUpload, "application/pdf")
+#test_upload_file("FolderId", amazon_fetch_url)
+#test_get_file("FileId")

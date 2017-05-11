@@ -60,6 +60,50 @@ public class Box {
 	}
 	
 	/**
+	 * Creates a folder with the specified information in Box
+	 * 
+	 * @param folderName - Name of folder to create
+	 * @param recipient - Name of receiver
+	 * @param sender - Name of sender
+	 * @return HttpResponse of the POST request
+	 * @throws IOException
+	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 */
+	public HttpResponse CreateFolderWithFiles(String folderName, String recipient, String sender) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+		String path = "/api/partner/folder";
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpPost request = new HttpPost(baseUrl + path);
+
+		addHeaders(request, "POST", path);
+
+		JSONObject folder = new JSONObject();
+		folder.put("name", folderName);
+		folder.put("to", recipient);
+		folder.put("from", sender);
+		
+		JSONObject file1 = new JSONObject();
+		file1.put("name", "Java_File1.pdf");
+		file1.put("notes", "Java_File1 was uploaded using Java");
+		file1.put("copies", 1);
+		file1.put("url", "File_Url1");
+		
+		JSONObject file2 = new JSONObject();
+		file2.put("name", "Java_File2.pdf");
+		file2.put("notes", "Java_File2 was uploaded using Java");
+		file2.put("copies", 1);
+		file2.put("url", "File_Url2");
+		
+		folder.append("files", file1);
+		folder.append("files", file2);
+		
+		request.setEntity(new StringEntity(folder.toString(), "UTF-8"));
+		
+		System.out.println("Creating Folder with files");
+		return client.execute(request);
+	}
+	
+	/**
 	 * Gets information about a file in Box
 	 * 
 	 * @param fileId - Id of the file 

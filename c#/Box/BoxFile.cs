@@ -25,5 +25,12 @@ namespace Box
             folderId = fId;
             copies = numCopies;
         }
+
+        public BoxFile(string fileUrl, string fileName, string numCopies)
+        {
+            url = fileUrl;
+            name = fileName;
+            copies = numCopies;
+        }
     }
 }
