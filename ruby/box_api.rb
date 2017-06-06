@@ -9,8 +9,8 @@ require 'time'
 #access credentials
 #$baseUrl = "https://printos.api.hp.com/box"		#use for production account
 #$baseUrl = "https://stage.printos.api.hp.com/box"	#use for staging account
-$key = "";
-$secret = "";
+$key = ""
+$secret = ""
 
 #amazon fetch and upload urls
 $amazon_fetch_url  = ""
@@ -75,6 +75,13 @@ def get_file(file_id)
 	puts response.body
 end
 
+# Gets flows set up within Box
+def get_flows()
+	puts "Getting flows"
+	response = request_get('/api/partner/flow')
+	puts response.body
+end
+
 # Gets information about a folder in Box.
 #
 # Param: 
@@ -109,7 +116,14 @@ end
 #   file_url - Url of the file to upload (not a local path)
 def upload_file(folder_id, file_url) 
 	puts "Uploading file: " + file_url + " to folder: " + folder_id
-	file = {:url => file_url, :name => "Ruby_File.pdf", :notes => "This was uploaded using Ruby", :copies => 1, :folderId => folder_id}
+	file = {
+		:url => file_url, 
+		:name => "Ruby_File.pdf", 
+		:notes => "This was uploaded using Ruby", 
+		:copies => 1, 
+		:folderId => folder_id,
+		# :flow => "Flow ezName" # The flow value is either the easy submit name of the flow or the _id property from get_flows()
+	}
 	data = JSON.generate(file)
 	response = request_post('/api/partner/file', data)
 	puts response.body
@@ -254,6 +268,7 @@ create_folder("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
 #create_folder_with_files("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
 #get_folder("FolderId")
 get_substrates()
+get_flows()
 get_upload_urls("application/pdf")
 #upload_file_to_aws($file_to_upload, "application/pdf")
 #upload_file("FolderId", $amazon_fetch_url)

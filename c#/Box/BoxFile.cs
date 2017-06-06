@@ -17,6 +17,7 @@ namespace Box
         public string folderId { get; set; }
         public string copies { get; set; }
         public string substrate { get; set; }
+        public string flow { get; set; }
 
         public BoxFile(string fileUrl, string fileName, string fId, string numCopies)
         {

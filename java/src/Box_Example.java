@@ -32,6 +32,7 @@ public class Box_Example {
 //		printInfo( box.CreateFolderWithFiles("Java_Folder", "Java_Receiver", "Java_Sender"), true);
 //		printInfo( box.GetFolder("FolderId"), true );
 		printInfo( box.GetSubstrates(), false );
+		printInfo( box.GetFlows(), true);
 		printInfo( box.GetUploadUrls("application/pdf"), true );
 //		printInfo( box.UploadFileToAws(amazonUpload, fileToUpload, "application/pdf"), false);
 //		printInfo( box.UploadFile("FolderId", fileUrl), true );

@@ -21,6 +21,7 @@ createFolder('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
 #createFolderWithFiles('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
 #getFolder('FolderId');
 getSubstrates();
+getFlows();
 getUploadUrls("application/pdf");
 #uploadFileToAws($fileToUpload, "application/pdf");
 #uploadFile('FolderId', $amazon_fetch_url);
@@ -88,6 +89,15 @@ function getFile($fileId) {
 }
 
 /**
+ * Gets flows set up within Box
+ */
+function getFlows() {
+	echo "Getting Flows </br>";
+	$response = getRequest('/api/partner/flow');
+	printInfo($response);
+}
+
+/**
  * Gets information about a folder in Box.
  * 
  * @param $folderId - Id of the folder
@@ -127,7 +137,14 @@ function getUploadUrls($mimeType) {
  */
 function uploadFile($folderId, $fileUrl) {
 	echo "Uploading file: " . $fileUrl . " to folder: " . $folderId . "</br>";
-	$arr = array('url' => $fileUrl, 'name' => "PHP_File.pdf", 'notes' => 'File was uploaded using PHP', 'copies' => '1', 'folderId' => $folderId);
+	$arr = array(
+		'url' => $fileUrl, 
+		'name' => "PHP_File.pdf", 
+		'notes' => 'File was uploaded using PHP', 
+		'copies' => '1', 
+		'folderId' => $folderId,
+		# 'flow' => 'Flow ezName' # The flow value is either the easy submit name of the flow or the _id property from getFlows()
+	);
 	$data = json_encode($arr);
 	$response = postRequest('/api/partner/file', $data);
 	printInfo($response);

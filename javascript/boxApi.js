@@ -40,6 +40,11 @@ function BoxApi(baseUrl, key, secret, proxy) {
 		return printOSClient.get('/api/partner/file/' + id);
 	}
 
+	this.getFlows = function() {
+		console.log("Getting flows");
+		return printOSClient.get('/api/partner/flow');
+	}
+
 	this.getFolder = function(id) {
 		console.log("Getting folder " + id);
 		return printOSClient.get('/api/partner/folder/' + id);
@@ -57,7 +62,14 @@ function BoxApi(baseUrl, key, secret, proxy) {
 
 	this.uploadFile = function(url, name, folderId, copies, notes) {
 		console.log("Creating file", url);
-		var payload = {'url':url, 'name':name, 'folderId':folderId, 'copies':copies, 'notes':notes }
+		var payload = {
+			'url':url, 
+			'name':name, 
+			'folderId':folderId, 
+			'copies':copies, 
+			'notes':notes, 
+			// 'flow':'Flow ezName' //The flow value is either the easy submit name of the flow or the _id property from getFlows()
+		}
 		return printOSClient.post('/api/partner/file', payload);
 	}
 }

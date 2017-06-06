@@ -25,8 +25,13 @@ function BoxApiTest() {
 		.then(success, failure);
 	}
 
-	this.testUploadFile = function(url, name, folder_id, copies, notes) {
-		boxApi.uploadFile(url, name, folder_id, copies, notes)
+	this.testGetFile = function(id) {
+		boxApi.getFile(id)
+		.then(success, failure);
+	}
+
+	this.testGetFlows = function() {
+		boxApi.getFlows()
 		.then(success, failure);
 	}
 
@@ -35,8 +40,13 @@ function BoxApiTest() {
 		.then(success, failure);
 	}
 
-	this.testGetFile = function(id) {
-		boxApi.getFile(id)
+	this.testGetSubstrates = function() {
+		boxApi.getSubstrates()
+		.then(success, failure);
+	}
+
+	this.testUploadFile = function(url, name, folder_id, copies, notes) {
+		boxApi.uploadFile(url, name, folder_id, copies, notes)
 		.then(success, failure);
 	}
 
@@ -45,16 +55,12 @@ function BoxApiTest() {
 		.then(success, failure);
 	}
 
-	this.testGetSubstrates = function() {
-		boxApi.getSubstrates()
-		.then(success, failure);
-	}
-
 	this.testAll = function() {
 		this.testCreateFolder('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');
 		// this.testCreateFolderWithFiles('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');	
 		// this.testGetFolder('folder_id');
 		this.testGetSubstrates(); 
+		this.testGetFlows();
 		this.testGetUploadUrls('application/pdf');
 		// this.testUploadFile('http://www.w3schools.com/html/pic_mountain.jpg', 'JavaScript_File.jpg', 'folder_id', copies='3', notes='File was uploaded using JavaScript');
 		// this.testGetFile('file_id');

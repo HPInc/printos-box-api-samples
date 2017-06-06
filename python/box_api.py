@@ -10,6 +10,7 @@ import requests, json, hmac, hashlib, datetime, base64, string, random
 #access credentials
 #baseUrl = "https://printos.api.hp.com/box" 					#use for production server account
 #baseUrl = "https://stage.printos.api.hp.com/box"				#use for staging server account
+
 key = ''
 secret = ''
 
@@ -109,6 +110,16 @@ def get_file(file_id):
 
 
 '''
+Return flows set up within Box
+'''
+def get_flows():
+	print("In get_flows() function")
+	print(" Getting flows")
+	path = '/api/partner/flow'
+	return request_get(path)	
+
+
+'''
 Returns information about a folder with the given ID
 
 Params:
@@ -197,7 +208,14 @@ Params:
 '''
 def upload_file(folder_id, file_url):
 	print("In upload_file() function")
-	payload = { 'url': file_url, 'name': 'Python_File.pdf', 'notes': 'File was uploaded using Python', 'folderId': folder_id, 'copies': 1 }
+	payload = { 
+		'url': file_url,
+		'name': 'Python_File.pdf', 
+		'notes': 'File was uploaded using Python', 
+		'folderId': folder_id, 
+		'copies': 1, 
+		# 'flow': "588fc7ab1e46861100dd7f42" # The flow value is either the easy submit name of the flow or the _id property from get_flows()
+	}
 	body = json.JSONEncoder().encode(payload)
 	return request_post('/api/partner/file', body)
 
@@ -239,6 +257,11 @@ def test_get_file(file_id):
 	result = get_file(file_id)
 	print_json(result)
 
+def test_get_flows():
+	print("In test_get_flow() function")
+	result = get_flows()
+	print_json(result)
+
 def test_get_folder(folder_id):
 	print("In test_get_folder() function")
 	result = get_folder(folder_id)
@@ -272,6 +295,7 @@ test_create_folder('Python_Folder', 'Python_Receiver', 'Python_Sender')
 #test_create_folder_with_files('Python_Folder', 'Python_Receiver', 'Python_Sender')
 #test_get_folder("FolderId")
 test_get_substrates()
+test_get_flows()
 test_get_uploadUrls("application/pdf")
 #test_upload_file_to_aws(amazon_upload_url, fileToUpload, "application/pdf")
 #test_upload_file("FolderId", amazon_fetch_url)

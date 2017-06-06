@@ -44,6 +44,7 @@ namespace Box
             //await CreateFolderWithFiles("CSharp_Folder", "CSharp_Receiver", "CSharp_Sender"); WaitBeforeProceeding();
             //await GetFolder("FolderId"); WaitBeforeProceeding();
             await GetSubstrates(); WaitBeforeProceeding();
+            await GetFlows(); WaitBeforeProceeding();
             await GetUploadUrls("application/pdf"); WaitBeforeProceeding();
             //await UploadFileToAWS(fileToUpload, "application/pdf"); WaitBeforeProceeding();
             //await UploadFileToBox("FolderId", fileUrl); WaitBeforeProceeding();
@@ -189,6 +190,35 @@ namespace Box
         }
 
         /// <summary>
+        /// Gets information about a file in Box
+        /// </summary>
+        /// <returns></returns>
+        private static async Task GetFlows()
+        {
+            Console.WriteLine("Getting flows");
+            using (var client = new HttpClient())
+            {
+                CreateHmacHeaders("GET", "/api/partner/flow", client);
+
+                HttpResponseMessage response = await client.GetAsync(baseUrl + "/api/partner/flow");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("\nSuccess. Flows were found.\n");
+                    string info = await response.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(info);
+                    string infoFormatted = json.ToString();
+                    Console.WriteLine(infoFormatted);
+                }
+                else
+                {
+                    Console.WriteLine("Failure. Unable to find Flows");
+                    Console.WriteLine(response.ReasonPhrase);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets information about a folder in Box
         /// </summary>
         /// <param name="folderId">Id of the folder</param>
@@ -323,6 +353,7 @@ namespace Box
 
                 BoxFile file = new BoxFile(fileUrl, "CSharp_File.pdf", folderId, "10");
                 file.notes = "File was uploaded using CSharp";
+                //file.flow = "Flow ezName"; //The flow value is either the easy submit name of the flow or the _id property from GetFlows()
 
                 string fileJson = JsonConvert.SerializeObject(file, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                 HttpResponseMessage response = await client.PostAsync(baseUrl + "/api/partner/file", new StringContent(fileJson, Encoding.UTF8, "application/json"));

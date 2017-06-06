@@ -122,6 +122,25 @@ public class Box {
 		System.out.println("Getting File with ID: " + fileId);
 		return client.execute(request);
 	}
+
+	/**
+	 * Gets flows set up within Box
+	 * 
+	 * @return HttpResponse of the GET request
+	 * @throws InvalidKeyException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public HttpResponse GetFlows() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
+		String path = "/api/partner/flow";
+		CloseableHttpClient client = HttpClients.createDefault();
+		HttpGet request = new HttpGet(baseUrl + path);
+		
+		addHeaders(request, "GET", path);
+		
+		System.out.println("Getting Flows");
+		return client.execute(request);
+	} 
 	
 	/**
 	 * Gets information about a folder in Box
@@ -206,6 +225,7 @@ public class Box {
 		file.put("notes", "File was uploaded using Java");
 		file.put("folderId", folderId);
 		file.put("copies", 100);
+//		file.put("flow", "Flow ezName"); //The flow value is either the easy submit name of the flow or the _id property from GetFlows()
 		
 		request.setEntity(new StringEntity(file.toString(), "UTF-8"));
 		
