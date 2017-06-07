@@ -2,7 +2,7 @@
 
 ## General Information
 
-This is a postman collection for the PrintOS Box API.  It allows you to import a working set of API calls to test the functionality of the current APIs.  Exported as a v2 Collection.
+This is an exported collection for the Postman application (exported as a v2 Collection).  It allows you to import a working set of API calls to test the functionality of the current APIs.
 
 The Postman application can be downloaded here:  https://www.getpostman.com/
 
@@ -22,4 +22,5 @@ The Postman application can be downloaded here:  https://www.getpostman.com/
 - A Pre-request Script inside the collection uses the CryptoJS library to dynamically generate the authentication HMAC.  
 - This Pre-request Script also sets the necessary environment variables which are used in the HTTP Headers section for each call.
 - The response field can be used to capture response JSON messages from the Box API calls.
+
 NOTE: Some of the API calls such as Box Upload File and Box Query File are dependant on earlier API calls.  You should create at least one Folder before uploading a file, and upload one file before querying a file.
