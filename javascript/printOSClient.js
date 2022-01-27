@@ -22,13 +22,13 @@ var PrintOSClient = function(baseUrl, key, secret, proxy) {
 	function createHeaders(method, path) {
 	    var timestamp = (new Date()).toISOString()
 	    var toSign = method.toUpperCase() + " " + path + timestamp
-	    var hash = crypto.createHmac("SHA1", secret)
+	    var hash = crypto.createHmac("SHA256", secret)
 	    hash.update(toSign)
 	    var sig = hash.digest("hex");
 	    var headers = {
 	      "X-HP-HMAC-Authentication": key + ":" + sig,
 	      "X-HP-HMAC-Date":  timestamp,
-	      "X-HP-HMAC-Algorithm": "SHA1"
+	      "X-HP-HMAC-Algorithm": "SHA256"
 	    }
 	    return headers;
 	}

@@ -3,15 +3,15 @@
 
 var BoxApi = require('./boxApi');
 
-var key = '';
-var secret = '';
+var key = '';  //Enter the key from your PrintOS marketplace conenctor here
+var secret = '';   //Enter the secret from your PrintOS marketplace connector here
 var proxy = parseArgs();
 
 new BoxApiTest().testAll();
 
 function BoxApiTest() {
 
-	//var baseUrl = 'https://printos.api.hp.com/box'; //use for account on production server
+	var baseUrl = 'https://printos.api.hp.com/box'; //use for account on production server
 	//var baseUrl = 'https://stage.printos.api.hp.com/box'; //use for account on staging server
 	var boxApi = new BoxApi(baseUrl, key, secret, proxy);
 
@@ -56,12 +56,12 @@ function BoxApiTest() {
 	}
 
 	this.testAll = function() {
-		this.testCreateFolder('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');
+		//this.testCreateFolder('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');
 		// this.testCreateFolderWithFiles('JavaScript_Folder', 'JavaScript_Receiver', 'JavaScript_Sender');	
 		// this.testGetFolder('folder_id');
 		this.testGetSubstrates(); 
 		this.testGetFlows();
-		this.testGetUploadUrls('application/pdf');
+		//this.testGetUploadUrls('application/pdf');
 		// this.testUploadFile('http://www.w3schools.com/html/pic_mountain.jpg', 'JavaScript_File.jpg', 'folder_id', copies='3', notes='File was uploaded using JavaScript');
 		// this.testGetFile('file_id');
 	}
