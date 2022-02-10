@@ -1,9 +1,9 @@
 <?php
-# © Copyright 2016 HP Development Company, L.P.
+# © Copyright 2022 HP Development Company, L.P.
 # SPDX-License-Identifier: MIT
 
 #Access credentials
-#$baseUrl = 'https://printos.api.hp.com/box'; #use for a production account
+$baseUrl = 'https://printos.api.hp.com/box'; #use for a production account
 #$baseUrl = 'https://stage.printos.api.hp.com/box'; #use for a staging account
 $key = '';
 $secret = '';
@@ -17,7 +17,7 @@ $fileToUpload = 'C:\\FilePath\\FileName.pdf';
 #Function Calls 
 #--------------------------------------------------------------#
 
-createFolder('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
+#createFolder('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
 #createFolderWithFiles('PHP_Folder', 'PHP_Receiver', 'PHP_Sender');
 #getFolder('FolderId');
 getSubstrates();
@@ -176,7 +176,7 @@ function uploadFileToAws($file, $contentType) {
 function createHmacAuth($method, $path, $timestamp) {
 	global $key, $secret;
 	$str = $method . ' ' . $path . $timestamp;
-	$hash = hash_hmac('sha1', $str, $secret);
+	$hash = hash_hmac('sha256', $str, $secret);
 	return $key . ':' . $hash;
 }
 
@@ -220,7 +220,8 @@ function getRequest($path) {
 		'http' => array(
 			'header'=>  "Content-Type: application/json\r\n" .
 						"x-hp-hmac-date: " . $time . "\r\n" .
-						"x-hp-hmac-authentication: " . $auth . "\r\n",
+						"x-hp-hmac-authentication: " . $auth . "\r\n" .
+						"x-hp-hmac-algorithm: SHA256\r\n",
 			'method'  => 'GET',
 		),
 	); 
@@ -250,7 +251,8 @@ function getRequestWithParam($path, $mimeParam) {
 		'http' => array(
 			'header'=>  "Content-Type: application/json\r\n" .
 						"x-hp-hmac-date: " . $time . "\r\n" .
-						"x-hp-hmac-authentication: " . $auth . "\r\n",
+						"x-hp-hmac-authentication: " . $auth . "\r\n" .
+						"x-hp-hmac-algorithm: SHA256\r\n",
 			'method'  => 'GET',
 		),
 	); 
@@ -280,7 +282,8 @@ function postRequest($path, $data) {
 		'http' => array(
 			'header'=>  "Content-Type: application/json\r\n" .
 						"x-hp-hmac-date: " . $time . "\r\n" .
-						"x-hp-hmac-authentication: " . $auth . "\r\n",
+						"x-hp-hmac-authentication: " . $auth . "\r\n" .
+						"x-hp-hmac-algorithm: SHA256\r\n",
 			'method'  => 'POST',
 			'content' => $data
 		),
