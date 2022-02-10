@@ -8,11 +8,11 @@ __author__ = 'printos'
 import requests, json, hmac, hashlib, datetime, base64, string, random
 
 #access credentials
-#baseUrl = "https://printos.api.hp.com/box" 					#use for production server account
+baseUrl = "https://printos.api.hp.com/box" 					#use for production server account
 #baseUrl = "https://stage.printos.api.hp.com/box"				#use for staging server account
 
-key = ''
-secret = ''
+key = ''   		#enter the key generated from your PrintOS account here
+secret = ''		#enter the secret generated from your PrintOS account here
 
 #amazon fetch and upload urls
 amazon_fetch_url  = ""
@@ -86,13 +86,13 @@ def create_headers(method, path, timestamp):
 	string_to_sign = method + ' ' + path + timestamp
 	local_secret = secret.encode('utf-8')
 	string_to_sign = string_to_sign.encode('utf-8')
-	signature = hmac.new(local_secret, string_to_sign, hashlib.sha1).hexdigest()
+	signature = hmac.new(local_secret, string_to_sign, hashlib.sha256).hexdigest()
 	auth = key + ':' + signature
 	return {
 		'content-type': 'application/json',
 		'x-hp-hmac-authentication': auth,
 		'x-hp-hmac-date': timestamp,
-		'x-hp-hmac-algorithm' : 'SHA1'
+		'x-hp-hmac-algorithm' : 'SHA256'
 	}
 
 
@@ -291,7 +291,7 @@ def test_upload_file_to_aws(amazonUrl, fileToUpload, contentType):
 #--------------------------------------------------------------#
 
 
-test_create_folder('Python_Folder', 'Python_Receiver', 'Python_Sender')
+#test_create_folder('Python_Folder', 'Python_Receiver', 'Python_Sender')
 #test_create_folder_with_files('Python_Folder', 'Python_Receiver', 'Python_Sender')
 #test_get_folder("FolderId")
 test_get_substrates()
