@@ -7,10 +7,10 @@ require 'openssl'
 require 'time'
 
 #access credentials
-#$baseUrl = "https://printos.api.hp.com/box"		#use for production account
+$baseUrl = "https://printos.api.hp.com/box"		#use for production account
 #$baseUrl = "https://stage.printos.api.hp.com/box"	#use for staging account
-$key = ""
-$secret = ""
+$key = ""			#enter your PrintOS Key here	
+$secret = ""		#enter your PrintOS Secret here
 
 #amazon fetch and upload urls
 $amazon_fetch_url  = ""
@@ -152,8 +152,8 @@ end
 #   timestamp - time in utc format
 def create_hmac_auth(method, path, timestamp)
 	str = method + ' ' + path + timestamp;
-	sha1 = OpenSSL::Digest.new('sha1')
-	hash = OpenSSL::HMAC.hexdigest(sha1, $secret, str)
+	sha256 = OpenSSL::Digest.new('sha256')
+	hash = OpenSSL::HMAC.hexdigest(sha256, $secret, str)
 	return $key + ":" + hash
 end
 
@@ -176,6 +176,7 @@ def request_get(path)
 	request = Net::HTTP::Get.new(uri)
 	request.add_field("x-hp-hmac-authentication", auth)
 	request.add_field("x-hp-hmac-date", timestamp)
+	request.add_field("x-hp-hmac-algorithm", "SHA256")
 
 	response = Net::HTTP.start(uri.host, uri.port,
 		:use_ssl => uri.scheme == 'https',
@@ -202,6 +203,7 @@ def request_get_with_param(path, param)
 	request = Net::HTTP::Get.new(uri)
 	request.add_field("x-hp-hmac-authentication", auth)
 	request.add_field("x-hp-hmac-date", timestamp)
+	request.add_field("x-hp-hmac-algorithm", "SHA256")
 
 	response = Net::HTTP.start(uri.host, uri.port,
 		:use_ssl => uri.scheme == 'https',
@@ -227,6 +229,7 @@ def request_post(path, data)
 	request.add_field("Content-Type", "application/json")
 	request.add_field("x-hp-hmac-authentication", auth)
 	request.add_field("x-hp-hmac-date", timestamp)
+	request.add_field("x-hp-hmac-algorithm", "SHA256")
 	request.body = data
 
 	response = Net::HTTP.start(uri.host, uri.port,
@@ -264,7 +267,7 @@ end
 #Function Calls 
 #--------------------------------------------------------------#
 
-create_folder("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
+#create_folder("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
 #create_folder_with_files("Ruby_Folder", "Ruby_Receiver", "Ruby_Sender")
 #get_folder("FolderId")
 get_substrates()
