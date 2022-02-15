@@ -1,10 +1,8 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "a3cd0864-df6c-429e-8324-721f37d0cd02",
 		"name": "PrintOS Box",
-		"_postman_id": "965ae77e-37cf-5692-3162-d91f687e85ce",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -13,7 +11,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var responseJSON;",
 							"try {",
@@ -24,17 +21,17 @@
 							"catch (e) {}",
 							"",
 							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
+						],
+						"type": "text/javascript"
 					}
 				},
 				{
 					"listen": "prerequest",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var key = postman.getEnvironmentVariable(\"key\");",
 							"var secret = postman.getEnvironmentVariable(\"secret\");",
-							"var endpoint = postman.getGlobalVariable(\"folderEndpoint\");",
+							"var endpoint = '/api/partner/folder';",
 							"var headers = createHeaders (\"POST\", endpoint );",
 							"",
 							"postman.setEnvironmentVariable(\"hmacHeader\", headers[0]);",
@@ -45,7 +42,7 @@
 							"    ",
 							"    var toSign = method.toUpperCase() + \" \" + path + timestamp;",
 							"    console.log('Creating hash with string ', toSign);",
-							"    var hash = CryptoJS.HmacSHA1(toSign, secret);",
+							"    var hash = CryptoJS.HmacSHA256(toSign, secret);",
 							"    var sig = CryptoJS.enc.Hex.stringify(hash);",
 							"    var headers = [",
 							"      key + \":\" + sig,",
@@ -54,35 +51,47 @@
 							"    ];",
 							"    return headers;",
 							"}"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "{{baseURL}}box{{folderEndpoint}}",
 				"method": "POST",
 				"header": [
 					{
 						"key": "x-hp-hmac-authentication",
-						"value": "{{hmacHeader}}",
-						"description": ""
+						"value": "{{hmacHeader}}"
 					},
 					{
 						"key": "x-hp-hmac-date",
-						"value": "{{timestamp}}",
-						"description": ""
+						"value": "{{timestamp}}"
+					},
+					{
+						"key": "x-hp-hmac-algorithm",
+						"value": "SHA256",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"name\": \"Folder Name\",\r\n    \"from\": \"sender@acme.com\",\r\n    \"to\": \"recipient@psp.com\"\r\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "{{baseURL}}box/api/partner/folder",
+					"host": [
+						"{{baseURL}}box"
+					],
+					"path": [
+						"api",
+						"partner",
+						"folder"
+					]
+				}
 			},
 			"response": []
 		},
@@ -92,26 +101,27 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var responseJSON;",
 							"try {",
 							"    responseJSON = JSON.parse(responseBody);",
+							"    tests[\"Substrate array not empty\"] = responseJSON._id !== \"[]\";",
+							"    postman.setEnvironmentVariable(\"substrate\", responseJSON[0]);",
 							"}",
 							"catch (e) {}",
 							"",
 							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
+						],
+						"type": "text/javascript"
 					}
 				},
 				{
 					"listen": "prerequest",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var key = postman.getEnvironmentVariable(\"key\");",
 							"var secret = postman.getEnvironmentVariable(\"secret\");",
-							"var endpoint = postman.getEnvironmentVariable(\"substrateEndpoint\");",
+							"var endpoint = '/api/partner/substrate';",
 							"var headers = createHeaders (\"GET\", endpoint );",
 							"",
 							"postman.setEnvironmentVariable(\"hmacHeader\", headers[0]);",
@@ -122,7 +132,7 @@
 							"    ",
 							"    var toSign = method.toUpperCase() + \" \" + path + timestamp;",
 							"    console.log('Creating hash with string ', toSign);",
-							"    var hash = CryptoJS.HmacSHA1(toSign, secret);",
+							"    var hash = CryptoJS.HmacSHA256(toSign, secret);",
 							"    var sig = CryptoJS.enc.Hex.stringify(hash);",
 							"    var headers = [",
 							"      key + \":\" + sig,",
@@ -131,35 +141,43 @@
 							"    ];",
 							"    return headers;",
 							"}"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "{{baseURL}}box{{substrateEndpoint}}",
 				"method": "GET",
 				"header": [
 					{
 						"key": "x-hp-hmac-authentication",
-						"value": "{{hmacHeader}}",
-						"description": ""
+						"value": "{{hmacHeader}}"
 					},
 					{
 						"key": "x-hp-hmac-date",
-						"value": "{{timestamp}}",
-						"description": ""
+						"value": "{{timestamp}}"
+					},
+					{
+						"key": "x-hp-hmac-algorithm",
+						"value": "SHA256",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"url\": \"https://www.w3schools.com/html/pic_mountain.jpg\",\r\n    \"name\": \"Mountain JPEG\",\r\n    \"folderId\":{{lastFolderId}},\r\n    \"copies\": 5,\r\n    \"notes\": \"Picture from w3schools website\"\r\n}"
-				},
-				"description": ""
+				"url": {
+					"raw": "{{baseURL}}box/api/partner/substrate",
+					"host": [
+						"{{baseURL}}box"
+					],
+					"path": [
+						"api",
+						"partner",
+						"substrate"
+					]
+				}
 			},
 			"response": []
 		},
@@ -169,26 +187,27 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var responseJSON;",
 							"try {",
 							"    responseJSON = JSON.parse(responseBody);",
+							"    tests[\"Flow object not empty\"] = responseJSON !== \"\";",
+							"    postman.setEnvironmentVariable(\"flow\", responseJSON.items[0].name);",
 							"}",
 							"catch (e) {}",
 							"",
 							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
+						],
+						"type": "text/javascript"
 					}
 				},
 				{
 					"listen": "prerequest",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var key = postman.getEnvironmentVariable(\"key\");",
 							"var secret = postman.getEnvironmentVariable(\"secret\");",
-							"var endpoint = postman.getGlobalVariable(\"flowEndpoint\");",
+							"var endpoint = '/api/partner/flow';",
 							"var headers = createHeaders (\"GET\", endpoint );",
 							"",
 							"postman.setEnvironmentVariable(\"hmacHeader\", headers[0]);",
@@ -199,7 +218,7 @@
 							"    ",
 							"    var toSign = method.toUpperCase() + \" \" + path + timestamp;",
 							"    console.log('Creating hash with string ', toSign);",
-							"    var hash = CryptoJS.HmacSHA1(toSign, secret);",
+							"    var hash = CryptoJS.HmacSHA256(toSign, secret);",
 							"    var sig = CryptoJS.enc.Hex.stringify(hash);",
 							"    var headers = [",
 							"      key + \":\" + sig,",
@@ -208,35 +227,128 @@
 							"    ];",
 							"    return headers;",
 							"}"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "{{baseURL}}box{{flowEndpoint}}",
 				"method": "GET",
 				"header": [
 					{
 						"key": "x-hp-hmac-authentication",
-						"value": "{{hmacHeader}}",
-						"description": ""
+						"value": "{{hmacHeader}}"
 					},
 					{
 						"key": "x-hp-hmac-date",
-						"value": "{{timestamp}}",
-						"description": ""
+						"value": "{{timestamp}}"
+					},
+					{
+						"key": "x-hp-hmac-algorithm",
+						"value": "SHA256",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"url\": \"https://www.w3schools.com/html/pic_mountain.jpg\",\r\n    \"name\": \"Mountain JPEG\",\r\n    \"folderId\":{{lastFolderId}},\r\n    \"copies\": 5,\r\n    \"notes\": \"Picture from w3schools website\"\r\n}"
+				"url": {
+					"raw": "{{baseURL}}box/api/partner/flow",
+					"host": [
+						"{{baseURL}}box"
+					],
+					"path": [
+						"api",
+						"partner",
+						"flow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Box Query Folder",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var key = postman.getEnvironmentVariable(\"key\");",
+							"var secret = postman.getEnvironmentVariable(\"secret\");",
+							"var endpoint = '/api/partner/folder/' + postman.getEnvironmentVariable(\"lastFolderId\");",
+							"var headers = createHeaders (\"GET\", endpoint );",
+							"",
+							"postman.setEnvironmentVariable(\"hmacHeader\", headers[0]);",
+							"postman.setEnvironmentVariable(\"timestamp\", headers[1]);",
+							"",
+							"function createHeaders(method, path) {",
+							"    var timestamp = (new Date()).toISOString();",
+							"    ",
+							"    var toSign = method.toUpperCase() + \" \" + path + timestamp;",
+							"    console.log('Creating hash with string ', toSign);",
+							"    var hash = CryptoJS.HmacSHA256(toSign, secret);",
+							"    var sig = CryptoJS.enc.Hex.stringify(hash);",
+							"    var headers = [",
+							"      key + \":\" + sig,",
+							"      timestamp,",
+							"      \"SHA1\"",
+							"    ];",
+							"    return headers;",
+							"}"
+						],
+						"type": "text/javascript"
+					}
 				},
-				"description": ""
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseJSON;",
+							"try {",
+							"    responseJSON = JSON.parse(responseBody);",
+							"}",
+							"catch (e) {}",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-hp-hmac-authentication",
+						"value": "{{hmacHeader}}"
+					},
+					{
+						"key": "x-hp-hmac-date",
+						"value": "{{timestamp}}"
+					},
+					{
+						"key": "x-hp-hmac-algorithm",
+						"value": "SHA256",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}box/api/partner/folder/{{lastFolderId}}",
+					"host": [
+						"{{baseURL}}box"
+					],
+					"path": [
+						"api",
+						"partner",
+						"folder",
+						"{{lastFolderId}}"
+					]
+				}
 			},
 			"response": []
 		},
@@ -246,7 +358,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var responseJSON;",
 							"try {",
@@ -257,17 +368,17 @@
 							"catch (e) {}",
 							"",
 							"tests[\"Status code is 201\"] = responseCode.code === 200;"
-						]
+						],
+						"type": "text/javascript"
 					}
 				},
 				{
 					"listen": "prerequest",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var key = postman.getEnvironmentVariable(\"key\");",
 							"var secret = postman.getEnvironmentVariable(\"secret\");",
-							"var endpoint = postman.getGlobalVariable(\"fileEndpoint\");",
+							"var endpoint = '/api/partner/file';",
 							"var headers = createHeaders (\"POST\", endpoint );",
 							"",
 							"postman.setEnvironmentVariable(\"hmacHeader\", headers[0]);",
@@ -278,7 +389,7 @@
 							"    ",
 							"    var toSign = method.toUpperCase() + \" \" + path + timestamp;",
 							"    console.log('Creating hash with string ', toSign);",
-							"    var hash = CryptoJS.HmacSHA1(toSign, secret);",
+							"    var hash = CryptoJS.HmacSHA256(toSign, secret);",
 							"    var sig = CryptoJS.enc.Hex.stringify(hash);",
 							"    var headers = [",
 							"      key + \":\" + sig,",
@@ -287,35 +398,47 @@
 							"    ];",
 							"    return headers;",
 							"}"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "{{baseURL}}box{{fileEndpoint}}",
 				"method": "POST",
 				"header": [
 					{
 						"key": "x-hp-hmac-authentication",
-						"value": "{{hmacHeader}}",
-						"description": ""
+						"value": "{{hmacHeader}}"
 					},
 					{
 						"key": "x-hp-hmac-date",
-						"value": "{{timestamp}}",
-						"description": ""
+						"value": "{{timestamp}}"
+					},
+					{
+						"key": "x-hp-hmac-algorithm",
+						"value": "SHA256",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"url\": \"https://www.w3schools.com/html/pic_mountain.jpg\",\r\n    \"name\": \"Mountain JPEG\",\r\n    \"folderId\":\"{{lastFolderId}}\",\r\n    \"copies\": 5,\r\n    \"notes\": \"Picture from w3schools website\",\r\n    \"substrate\": \"{{substrate}}\",\r\n    \"flow\": \"{{flow}}\"\r\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "{{baseURL}}box/api/partner/file",
+					"host": [
+						"{{baseURL}}box"
+					],
+					"path": [
+						"api",
+						"partner",
+						"file"
+					]
+				}
 			},
 			"response": []
 		},
@@ -325,7 +448,6 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var responseJSON;",
 							"try {",
@@ -334,17 +456,17 @@
 							"catch (e) {}",
 							"",
 							"tests[\"Status code is 200\"] = responseCode.code === 200;"
-						]
+						],
+						"type": "text/javascript"
 					}
 				},
 				{
 					"listen": "prerequest",
 					"script": {
-						"type": "text/javascript",
 						"exec": [
 							"var key = postman.getEnvironmentVariable(\"key\");",
 							"var secret = postman.getEnvironmentVariable(\"secret\");",
-							"var endpoint = postman.getGlobalVariable(\"fileEndpoint\") + '/' + postman.getEnvironmentVariable(\"lastFileId\");",
+							"var endpoint = '/api/partner/file/' + postman.getEnvironmentVariable(\"lastFileId\");",
 							"var headers = createHeaders (\"GET\", endpoint );",
 							"",
 							"postman.setEnvironmentVariable(\"hmacHeader\", headers[0]);",
@@ -355,7 +477,7 @@
 							"    ",
 							"    var toSign = method.toUpperCase() + \" \" + path + timestamp;",
 							"    console.log('Creating hash with string ', toSign);",
-							"    var hash = CryptoJS.HmacSHA1(toSign, secret);",
+							"    var hash = CryptoJS.HmacSHA256(toSign, secret);",
 							"    var sig = CryptoJS.enc.Hex.stringify(hash);",
 							"    var headers = [",
 							"      key + \":\" + sig,",
@@ -364,35 +486,44 @@
 							"    ];",
 							"    return headers;",
 							"}"
-						]
+						],
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"url": "{{baseURL}}box{{fileEndpoint}}/{{lastFileId}}",
 				"method": "GET",
 				"header": [
 					{
 						"key": "x-hp-hmac-authentication",
-						"value": "{{hmacHeader}}",
-						"description": ""
+						"value": "{{hmacHeader}}"
 					},
 					{
 						"key": "x-hp-hmac-date",
-						"value": "{{timestamp}}",
-						"description": ""
+						"value": "{{timestamp}}"
+					},
+					{
+						"key": "x-hp-hmac-algorithm",
+						"value": "SHA256",
+						"type": "text"
 					},
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"url\": \"https://www.w3schools.com/html/pic_mountain.jpg\",\r\n    \"name\": \"Mountain JPEG\",\r\n    \"folderId\":{{lastFolderId}},\r\n    \"copies\": 5,\r\n    \"notes\": \"Picture from w3schools website\"\r\n}"
-				},
-				"description": ""
+				"url": {
+					"raw": "{{baseURL}}box/api/partner/file/{{lastFileId}}",
+					"host": [
+						"{{baseURL}}box"
+					],
+					"path": [
+						"api",
+						"partner",
+						"file",
+						"{{lastFileId}}"
+					]
+				}
 			},
 			"response": []
 		}
