@@ -16,10 +16,10 @@ namespace Box
     class Program
     {
         //Access Credentials
-        //private static string baseUrl = "https://printos.api.hp.com/box"; //use for production server account
+        private static string baseUrl = "https://printos.api.hp.com/box"; //use for production server account
         //private static string baseUrl = "https://stage.printos.api.hp.com/box"; // use for staging server account
-        private static string key = "";
-        private static string secret = "";
+        private static string key = "";  //Enter the Key you generated in the PrintOS marketplace's connectors tab here
+        private static string secret = "";   //Enter the Secret you generated in the PrintOS marketplace's connectors tab here
 
         //amazon urls 
         private static string amazonFetch = "";
@@ -40,7 +40,7 @@ namespace Box
 
         static async Task RunAsync()
         {
-            await CreateFolder("CSharp_Folder", "CSharp_Receiver", "CSharp_Sender"); WaitBeforeProceeding();
+            //await CreateFolder("CSharp_Folder", "CSharp_Receiver", "CSharp_Sender"); WaitBeforeProceeding();
             //await CreateFolderWithFiles("CSharp_Folder", "CSharp_Receiver", "CSharp_Sender"); WaitBeforeProceeding();
             //await GetFolder("FolderId"); WaitBeforeProceeding();
             await GetSubstrates(); WaitBeforeProceeding();
@@ -65,14 +65,14 @@ namespace Box
             string timeStamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 
             string stringToSign = method + " " + path + timeStamp;
-            HMACSHA1 hmac = new HMACSHA1(Encoding.UTF8.GetBytes(secret));
+            HMACSHA256 hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
             byte[] bytes = hmac.ComputeHash(Encoding.UTF8.GetBytes(stringToSign));
             string signature = BitConverter.ToString(bytes).Replace("-", string.Empty).ToLower();
             string auth = key + ":" + signature;
 
             client.DefaultRequestHeaders.Add("x-hp-hmac-authentication", auth);
             client.DefaultRequestHeaders.Add("x-hp-hmac-date", timeStamp);
-            client.DefaultRequestHeaders.Add("x-hp-hmac-algorithm", "SHA1");
+            client.DefaultRequestHeaders.Add("x-hp-hmac-algorithm", "SHA256");
         }
 
         private static void WaitBeforeProceeding()

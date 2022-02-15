@@ -116,3 +116,8 @@ local.properties
 #JavaScript git_ignore
 
 node_modules
+*.lock
+c#/.vs/Box/v16/Server/sqlite3/storage.ide
+c#/.vs/Box/v16/Server/sqlite3/storage.ide-shm
+c#/.vs/Box/v16/Server/sqlite3/storage.ide-wal
+c#/.vscode/launch.json
