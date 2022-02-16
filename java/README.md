@@ -5,8 +5,8 @@
 Code was written in Eclipse Neon
 
 External libraries used:
- * Apache HttpComponents
- * org.json
+ * Apache HttpComponents (last tested with version 4.5.13)
+ * org.json  (last tested with version 20140107)
 
 The JAR files to the libraries are not included. You will need to download and configure the jars to your build path to compile and run the project. You may also use different libraries to create the needed JSON strings and Http requests.
 
@@ -14,7 +14,7 @@ The JAR files to the libraries are not included. You will need to download and c
 
 The Box_Example.java class is the one that you will run.
 
-Before you can run the code, you need to provide the Key/Secret. The Box.java class has two baseUrls. Uncomment the one that your Key/Secret was created/provided in.
+Before you can run the code, you need to provide the Key/Secret. The Box.java class has two baseUrls. The production URL is used by default and should be used for most PrintOS customers.  If you were provided a development account in the staging environment then use the staging URL.
 
 The initial methods will create a folder, get available substrates and print out the amazon upload/fetch urls. The fetch and upload urls will be used to upload a local file to amazon which can then be uploaded to box. If you already have your file hosted yourself, you will not need to use this method.
 
