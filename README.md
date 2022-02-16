@@ -10,9 +10,9 @@ If you're a third party without a Key/Secret, visit [Box API Access](https://dev
 
 For existing PrintOS users, you can generate your own Key/Secret following the instructions [Here](https://www.dropbox.com/s/qbwmnniehw2jn0s/Requesting%20an%20API.pdf?dl=0)
 
-* Creating HMAC: https://developers.hp.com/printos/doc/api-authentication
+* Creating HMAC: https://developers.hp.com/printos-hp-indigo-integration-hub/doc/printos-api-authentication
 * API Documentation: https://developers.hp.com/printos/doc/box-documentation
-* Support Forums: https://developers.hp.com/forums/printos
+* Support Forums: https://developers.hp.com/forums/hp-indigo-sdks-and-apis
 
 ## Building and Running
 Information for running code in each language can be found within each language's folder.
