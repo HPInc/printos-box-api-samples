@@ -22,7 +22,7 @@ import org.json.JSONObject;
 public class Box {
 
 	//Access Credentials
-	//private static String baseUrl = "https://printos.api.hp.com/box"; //use for account on production server
+	private static String baseUrl = "https://printos.api.hp.com/box"; //use for account on production server
 	//private static String baseUrl = "https://stage.printos.api.hp.com/box"; //use for account on staging server
 	private static HmacAuth auth;
 
@@ -267,5 +267,6 @@ public class Box {
 		request.addHeader("Content-Type", "application/json");
 		request.addHeader("x-hp-hmac-authentication", auth.getHmacAuthentication(method, path));
 		request.addHeader("x-hp-hmac-date", auth.getTimestamp());
+		request.addHeader("x-hp-hmac-algorithm", "SHA256");
 	}
 }

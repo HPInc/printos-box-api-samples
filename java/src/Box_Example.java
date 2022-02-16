@@ -26,7 +26,7 @@ public class Box_Example {
     private static String fileUrl = "http://www.w3schools.com/html/pic_mountain.jpg";
 	
 	public static void main(String[] args) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-		box = new Box(key, secret, "HmacSHA1");
+		box = new Box(key, secret, "HmacSHA256");
 
 		printInfo( box.CreateFolder("Java_Folder", "Java_Receiver", "Java_Sender"), true );
 //		printInfo( box.CreateFolderWithFiles("Java_Folder", "Java_Receiver", "Java_Sender"), true);
